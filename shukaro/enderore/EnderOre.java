@@ -38,97 +38,97 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(modid = EnderOre.modID, name = EnderOre.modName, version = EnderOre.modVersion)
 public class EnderOre
 {
-	@SidedProxy(clientSide = "shukaro.enderore.net.ClientProxy", serverSide = "shukaro.enderore.net.CommonProxy")
-	public static CommonProxy proxy;
-	
-	public static final String modID = "EnderOre";
-	public static final String modName = "Ender Ore";
-	public static final String modVersion = "1.5.2R1.0";
-	
-	public static OreGen worldGen;
-	public static Logger logger;
-	
-	public static Block blockEnderOre;
-	public static Property blockEnderOreID;
-	public static Property enderOreFrequency;
-	public static Property enderOreMaxHeight;
-	public static Property enderOreMinHeight;
-	public static Property enderOreSize;
-	public static Property genOre;
-	
-	public static Item enderDust;
-	public static Property enderDustID;
-	
-	public static Property dimBlacklistProperty;
-	
-	public static Property regenKey;
-	
-	public static List<Integer> dimBlacklist = new ArrayList<Integer>();
-	public static List<String> worldTypeBlacklist = new ArrayList<String>();
-	
-	public static File configFolder;
-	
-	@Instance(modID)
-	public static EnderOre instance;
-	
-	@PreInit
-	public void preInit(FMLPreInitializationEvent e)
-	{
-		Configuration c = new Configuration(e.getSuggestedConfigurationFile());
-		try
-		{
-			c.load();
-			blockEnderOreID = c.getBlock("blockEnderOre", 3050);
-			enderDustID = c.getItem("enderDust", 4700);
-			genOre = c.get("World Generation", "Generate Ore", true);
-			enderOreFrequency = c.get("World Generation", "Ore Frequency", 8);
-			enderOreMaxHeight = c.get("World Generation", "Ore Max Height", 32);
-			enderOreMinHeight = c.get("World Generation", "Ore Min Height", 1);
-			enderOreSize = c.get("World Generation", "Ore Deposit Size", 6);
-			dimBlacklistProperty = c.get("World Generation", "Dimension Blacklist", "");
-			dimBlacklistProperty.comment = "Comma-seperated list of dimensions to ignore";
-			regenKey = c.get("World Generation", "Regeneration Key", "DEFAULT");
-			regenKey.comment = "Change to regenerate ore";
-		}
-		catch (Exception ex)
-		{
-			logger.log(Level.SEVERE, "Ender Ore couldn't load its config file!");
-			ex.printStackTrace();
-		}
-		finally
-		{
-			c.save();
-		}
-		
-		setConfigFolderBase(e.getModConfigurationDirectory());
-		extractLang(new String[] {"en_US" });
-		loadLang();
-		
-		logger = e.getModLog();
-		
-		setDimBlacklist();
-		
-		worldTypeBlacklist.add("flat");
-	}
-	
-	@Init
-	public void init(FMLInitializationEvent e)
-	{
-		blockEnderOre = new BlockEnderOre(blockEnderOreID.getInt());
-		enderDust = new EnderDust(enderDustID.getInt());
-		
-		GameRegistry.registerBlock(blockEnderOre, blockEnderOre.getUnlocalizedName());
-		GameRegistry.registerItem(enderDust, enderDust.getUnlocalizedName());
-		
-		GameRegistry.registerWorldGenerator(worldGen = new OreGen());
-		
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Item.enderPearl.itemID, 1, 0), new Object[] {
-			"XX",
-			"XX",
-			'X', new ItemStack(enderDust.itemID, 1, 0)
-		}));
-	}
-	
+    @SidedProxy(clientSide = "shukaro.enderore.net.ClientProxy", serverSide = "shukaro.enderore.net.CommonProxy")
+    public static CommonProxy proxy;
+    
+    public static final String modID = "EnderOre";
+    public static final String modName = "Ender Ore";
+    public static final String modVersion = "1.5.2R1.0";
+    
+    public static OreGen worldGen;
+    public static Logger logger;
+    
+    public static Block blockEnderOre;
+    public static Property blockEnderOreID;
+    public static Property enderOreFrequency;
+    public static Property enderOreMaxHeight;
+    public static Property enderOreMinHeight;
+    public static Property enderOreSize;
+    public static Property genOre;
+    
+    public static Item enderDust;
+    public static Property enderDustID;
+    
+    public static Property dimBlacklistProperty;
+    
+    public static Property regenKey;
+    
+    public static List<Integer> dimBlacklist = new ArrayList<Integer>();
+    public static List<String> worldTypeBlacklist = new ArrayList<String>();
+    
+    public static File configFolder;
+    
+    @Instance(modID)
+    public static EnderOre instance;
+    
+    @PreInit
+    public void preInit(FMLPreInitializationEvent e)
+    {
+        Configuration c = new Configuration(e.getSuggestedConfigurationFile());
+        try
+        {
+            c.load();
+            blockEnderOreID = c.getBlock("blockEnderOre", 3050);
+            enderDustID = c.getItem("enderDust", 4700);
+            genOre = c.get("World Generation", "Generate Ore", true);
+            enderOreFrequency = c.get("World Generation", "Ore Frequency", 8);
+            enderOreMaxHeight = c.get("World Generation", "Ore Max Height", 32);
+            enderOreMinHeight = c.get("World Generation", "Ore Min Height", 1);
+            enderOreSize = c.get("World Generation", "Ore Deposit Size", 6);
+            dimBlacklistProperty = c.get("World Generation", "Dimension Blacklist", "");
+            dimBlacklistProperty.comment = "Comma-seperated list of dimensions to ignore";
+            regenKey = c.get("World Generation", "Regeneration Key", "DEFAULT");
+            regenKey.comment = "Change to regenerate ore";
+        }
+        catch (Exception ex)
+        {
+            logger.log(Level.SEVERE, "Ender Ore couldn't load its config file!");
+            ex.printStackTrace();
+        }
+        finally
+        {
+            c.save();
+        }
+        
+        setConfigFolderBase(e.getModConfigurationDirectory());
+        extractLang(new String[] {"en_US" });
+        loadLang();
+        
+        logger = e.getModLog();
+        
+        setDimBlacklist();
+        
+        worldTypeBlacklist.add("flat");
+    }
+    
+    @Init
+    public void init(FMLInitializationEvent e)
+    {
+        blockEnderOre = new BlockEnderOre(blockEnderOreID.getInt());
+        enderDust = new EnderDust(enderDustID.getInt());
+        
+        GameRegistry.registerBlock(blockEnderOre, blockEnderOre.getUnlocalizedName());
+        GameRegistry.registerItem(enderDust, enderDust.getUnlocalizedName());
+        
+        GameRegistry.registerWorldGenerator(worldGen = new OreGen());
+        
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Item.enderPearl.itemID, 1, 0), new Object[] {
+            "XX",
+            "XX",
+            'X', new ItemStack(enderDust.itemID, 1, 0)
+        }));
+    }
+    
     private static void setDimBlacklist()
     {
         String blacklist = dimBlacklistProperty.getString().trim();
@@ -139,7 +139,7 @@ public class EnderOre
             {
                 Integer dimID = Integer.parseInt(dim);
                 if (!dimBlacklist.contains(dimID))
-                	dimBlacklist.add(dimID);
+                    dimBlacklist.add(dimID);
             }
             catch (Exception e)
             {

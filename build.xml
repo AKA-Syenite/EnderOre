@@ -91,10 +91,10 @@
         <copy todir="${classes.dir}/mods/enderore/textures/blocks/">
             <fileset dir="mods/enderore/textures/blocks/" />
         </copy>
-    	
-    	<copy todir="${classes.dir}/shukaro/enderore/lang/">
-    	   <fileset dir="shukaro/enderore/lang/" />
-    	</copy>
+        
+        <copy todir="${classes.dir}/shukaro/enderore/lang/">
+           <fileset dir="shukaro/enderore/lang/" />
+        </copy>
     </target>
     
     <target name="build-number-there" if="env.BUILD_NUMBER" >
