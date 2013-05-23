@@ -1,0 +1,21 @@
+[
+{
+  "modid": "EnderOre",
+  "name": "Ender Ore",
+  "description": "",
+  "version": "1.0",
+  "mcversion": "1.5.2",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "Shukaro"
+  ],
+  "credits": "All the contributors",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]

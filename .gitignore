@@ -1,0 +1,9 @@
+cpw/
+ibxm/
+net/
+paulscode/
+*.cfg
+*.properties
+*.png
+Start.java
+mcpmod.info
