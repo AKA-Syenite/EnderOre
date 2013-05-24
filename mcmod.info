@@ -2,7 +2,7 @@
 {
   "modid": "EnderOre",
   "name": "Ender Ore",
-  "description": "",
+  "description": "Adds mineable ender pearls",
   "version": "1.0",
   "mcversion": "1.5.2",
   "url": "",
