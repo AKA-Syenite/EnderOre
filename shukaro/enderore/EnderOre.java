@@ -23,6 +23,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import shukaro.enderore.block.BlockEnderOre;
 import shukaro.enderore.block.EnderDust;
+import shukaro.enderore.net.ClientProxy;
 import shukaro.enderore.net.CommonProxy;
 import shukaro.enderore.world.OreGen;
 import cpw.mods.fml.common.Mod;
