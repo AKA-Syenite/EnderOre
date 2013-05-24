@@ -23,7 +23,7 @@ public class BlockEnderOre extends Block
     private static Icon blockIcon;
     private boolean isOn;
     
-    public BlockEnderOre(int par1, boolean isOn)
+    public BlockEnderOre(int par1)
     {
         super(par1, Material.rock);
         this.setHardness(3.0F);
@@ -31,9 +31,7 @@ public class BlockEnderOre extends Block
         this.setStepSound(soundStoneFootstep);
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setUnlocalizedName("enderore.enderore");
-        this.isOn = isOn;
-        if (this.isOn)
-        	this.setTickRandomly(true);
+        this.setTickRandomly(true);
     }
     
     @Override
@@ -53,8 +51,8 @@ public class BlockEnderOre extends Block
     @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z)
     {
-        if (this.isOn)
-            return 4;
+        if (world.getBlockMetadata(x, y, z) == 1)
+            return 8;
         else
             return 0;
     }
@@ -69,37 +67,56 @@ public class BlockEnderOre extends Block
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         this.glow(par1World, par2, par3, par4);
-        super.onBlockClicked(par1World, par2, par3, par4, par5EntityPlayer);
     }
     
     @Override
     public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
         this.glow(par1World, par2, par3, par4);
-        super.onEntityWalking(par1World, par2, par3, par4, par5Entity);
     }
     
     @Override
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         this.glow(par1World, par2, par3, par4);
-        return super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
+        return false;
     }
     
     private void glow(World par1World, int par2, int par3, int par4)
     {
-        if (!this.isOn)
+    	this.sparkle(par1World, par2, par3, par4);
+    	
+        if (par1World.getBlockMetadata(par2, par3, par4) == 0)
         {
-            par1World.setBlock(par2, par3, par4, EnderOre.blockEnderOreGlowing.blockID);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
         }
     }
     
+    private void sparkle(World par1World, int par2, int par3, int par4)
+    {
+    	Random rand = par1World.rand;
+    	double x = (double) par2 + 0.5D + rand.nextDouble() - rand.nextDouble();
+    	double y = (double) par3 + 0.5D + rand.nextDouble() - rand.nextDouble();
+    	double z = (double) par4 + 0.5D + rand.nextDouble() - rand.nextDouble();
+    	par1World.spawnParticle("portal", x, y, z, rand.nextDouble() - rand.nextDouble(), rand.nextDouble() - rand.nextDouble(), rand.nextDouble() - rand.nextDouble());
+	}
+    
     @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    {
+    	if (par1World.getBlockMetadata(par2, par3, par4) == 1)
+    	{
+    		this.sparkle(par1World, par2, par3, par4);
+    	}
+    }
+
+	@Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        if (this.isOn)
+        if (par1World.getBlockMetadata(par2, par3, par4) == 1)
         {
-            par1World.setBlock(par2, par3, par4, EnderOre.blockEnderOre.blockID);
+        	par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 2);
         }
     }
     
@@ -118,7 +135,7 @@ public class BlockEnderOre extends Block
     @Override
     public int quantityDropped(Random par1Random)
     {
-        return 3 + par1Random.nextInt(2);
+        return 2 + par1Random.nextInt(2);
     }
     
     @Override

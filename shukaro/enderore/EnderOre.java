@@ -18,11 +18,14 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import shukaro.enderore.block.BlockEnderOre;
 import shukaro.enderore.block.EnderDust;
+import shukaro.enderore.event.EventHandler;
+import shukaro.enderore.event.WorldTicker;
 import shukaro.enderore.world.OreGen;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -33,6 +36,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = EnderOre.modID, name = EnderOre.modName, version = EnderOre.modVersion)
 public class EnderOre
@@ -43,11 +48,10 @@ public class EnderOre
     
     public static OreGen worldGen;
     public static Logger logger;
+    public static EventHandler eventHandler;
     
     public static Block blockEnderOre;
-    public static Block blockEnderOreGlowing;
     public static Property blockEnderOreID;
-    public static Property blockEnderOreGlowingID;
     public static Property enderOreFrequency;
     public static Property enderOreMaxHeight;
     public static Property enderOreMinHeight;
@@ -77,7 +81,6 @@ public class EnderOre
         {
             c.load();
             blockEnderOreID = c.getBlock("blockEnderOre", 3050);
-            blockEnderOreGlowingID = c.getBlock("blockEnderOreGlowing", 3051);
             enderDustID = c.getItem("enderDust", 4700);
             genOre = c.get("World Generation", "Generate Ore", true);
             enderOreFrequency = c.get("World Generation", "Ore Frequency", 8);
@@ -108,13 +111,17 @@ public class EnderOre
         setDimBlacklist();
         
         worldTypeBlacklist.add("flat");
+        
+        eventHandler = new EventHandler();
+        MinecraftForge.EVENT_BUS.register(eventHandler);
+        
+        TickRegistry.registerTickHandler(new WorldTicker(), Side.SERVER);
     }
     
     @Init
     public void init(FMLInitializationEvent e)
     {
-        blockEnderOre = new BlockEnderOre(blockEnderOreID.getInt(), false);
-        blockEnderOreGlowing = new BlockEnderOre(blockEnderOreGlowingID.getInt(), true);
+        blockEnderOre = new BlockEnderOre(blockEnderOreID.getInt());
         enderDust = new EnderDust(enderDustID.getInt());
         
         GameRegistry.registerBlock(blockEnderOre, blockEnderOre.getUnlocalizedName());
