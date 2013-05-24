@@ -23,8 +23,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import shukaro.enderore.block.BlockEnderOre;
 import shukaro.enderore.block.EnderDust;
-import shukaro.enderore.net.ClientProxy;
-import shukaro.enderore.net.CommonProxy;
 import shukaro.enderore.world.OreGen;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -39,9 +37,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(modid = EnderOre.modID, name = EnderOre.modName, version = EnderOre.modVersion)
 public class EnderOre
 {
-    @SidedProxy(clientSide = "shukaro.enderore.net.ClientProxy", serverSide = "shukaro.enderore.net.CommonProxy")
-    public static CommonProxy proxy;
-    
     public static final String modID = "EnderOre";
     public static final String modName = "Ender Ore";
     public static final String modVersion = "1.5.2R1.0";
