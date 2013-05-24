@@ -18,7 +18,7 @@ public class EventHandler
     @ForgeSubscribe
     public void chunkSave(ChunkDataEvent.Save e)
     {
-        e.getData().setString("Artifice", EnderOre.regenKey.getString());
+        e.getData().setString("EnderOre", EnderOre.regenKey.getString());
     }
     
     @ForgeSubscribe
