@@ -21,16 +21,19 @@ import net.minecraft.world.World;
 public class BlockEnderOre extends Block
 {
     private static Icon blockIcon;
+    private boolean isOn;
     
-    public BlockEnderOre(int par1)
+    public BlockEnderOre(int par1, boolean isOn)
     {
         super(par1, Material.rock);
-        this.setTickRandomly(true);
         this.setHardness(3.0F);
         this.setResistance(5.0F);
         this.setStepSound(soundStoneFootstep);
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setUnlocalizedName("enderore.enderore");
+        this.isOn = isOn;
+        if (this.isOn)
+        	this.setTickRandomly(true);
     }
     
     @Override
@@ -50,7 +53,7 @@ public class BlockEnderOre extends Block
     @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z)
     {
-        if (world.getBlockMetadata(x, y, z) == 1)
+        if (this.isOn)
             return 4;
         else
             return 0;
@@ -60,12 +63,6 @@ public class BlockEnderOre extends Block
     public int tickRate(World world)
     {
         return 30;
-    }
-    
-    @Override
-    public int getDamageValue(World world, int x, int y, int z)
-    {
-        return world.getBlockMetadata(x, y, z);
     }
     
     @Override
@@ -91,18 +88,18 @@ public class BlockEnderOre extends Block
     
     private void glow(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.getBlockMetadata(par2, par3, par4) == 0)
+        if (!this.isOn)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
+            par1World.setBlock(par2, par3, par4, EnderOre.blockEnderOreGlowing.blockID);
         }
     }
     
     @Override
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        if (par1World.getBlockMetadata(par2, par3, par4) == 1)
+        if (this.isOn)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 2);
+            par1World.setBlock(par2, par3, par4, EnderOre.blockEnderOre.blockID);
         }
     }
     

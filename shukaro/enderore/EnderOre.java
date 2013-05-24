@@ -49,7 +49,9 @@ public class EnderOre
     public static Logger logger;
     
     public static Block blockEnderOre;
+    public static Block blockEnderOreGlowing;
     public static Property blockEnderOreID;
+    public static Property blockEnderOreGlowingID;
     public static Property enderOreFrequency;
     public static Property enderOreMaxHeight;
     public static Property enderOreMinHeight;
@@ -79,6 +81,7 @@ public class EnderOre
         {
             c.load();
             blockEnderOreID = c.getBlock("blockEnderOre", 3050);
+            blockEnderOreGlowingID = c.getBlock("blockEnderOreGlowing", 3051);
             enderDustID = c.getItem("enderDust", 4700);
             genOre = c.get("World Generation", "Generate Ore", true);
             enderOreFrequency = c.get("World Generation", "Ore Frequency", 8);
@@ -114,7 +117,8 @@ public class EnderOre
     @Init
     public void init(FMLInitializationEvent e)
     {
-        blockEnderOre = new BlockEnderOre(blockEnderOreID.getInt());
+        blockEnderOre = new BlockEnderOre(blockEnderOreID.getInt(), false);
+        blockEnderOreGlowing = new BlockEnderOre(blockEnderOreGlowingID.getInt(), true);
         enderDust = new EnderDust(enderDustID.getInt());
         
         GameRegistry.registerBlock(blockEnderOre, blockEnderOre.getUnlocalizedName());
