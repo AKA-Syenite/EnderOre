@@ -73,13 +73,11 @@ public class OreGen implements IWorldGenerator
         numberOfBlocks = rand.nextInt(EnderOre.enderOreSize.getInt()) + 3;
         
         genned = 0;
-
         coord.set(x, y, z);
+        list.clear();
         
         while (genned < numberOfBlocks)
         {
-            list.clear();
-            
             if (!(Block.blocksList[world.getBlockId(coord.x, coord.y, coord.z)] == null) && world.getBlockId(coord.x, coord.y, coord.z) == Block.stone.blockID)
             {
                 world.setBlock(coord.x, coord.y, coord.z, EnderOre.blockEnderOre.blockID, 0, 2);
@@ -96,7 +94,10 @@ public class OreGen implements IWorldGenerator
             }
             
             if (list.size() != 0)
+            {
                 coord.set(list.get(rand.nextInt(list.size())));
+                list.remove(coord);
+            }
             else
                 return true;
         }
