@@ -14,6 +14,8 @@ import net.minecraftforge.event.world.ChunkDataEvent;
 public class EventHandler
 {
     private List<Integer> dimBlacklist;
+    private int dim;
+    private ArrayList chunks;
     
     @ForgeSubscribe
     public void chunkSave(ChunkDataEvent.Save e)
@@ -24,7 +26,7 @@ public class EventHandler
     @ForgeSubscribe
     public void chunkLoad(ChunkDataEvent.Load e)
     {
-        int dim = e.world.provider.dimensionId;
+        dim = e.world.provider.dimensionId;
         ChunkCoordIntPair c = e.getChunk().getChunkCoordIntPair();
         
         if (dimBlacklist == null)
@@ -36,7 +38,7 @@ public class EventHandler
         if (!e.getData().getString("EnderOre").equals(EnderOre.regenKey.getString()))
         {
             EnderOre.logger.log(Level.WARNING, "World gen was never run for chunk at " + e.getChunk().getChunkCoordIntPair() + ". Adding to queue for regeneration.");
-            ArrayList chunks = (ArrayList) WorldTicker.chunksToGen.get(Integer.valueOf(dim));
+            chunks = (ArrayList) WorldTicker.chunksToGen.get(Integer.valueOf(dim));
             if (chunks == null)
             {
                 WorldTicker.chunksToGen.put(Integer.valueOf(dim), new ArrayList());

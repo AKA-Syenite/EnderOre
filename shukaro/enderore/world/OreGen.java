@@ -18,11 +18,17 @@ public class OreGen implements IWorldGenerator
     private static List<Integer> blacklistedDimensions;
     private static List<String> blacklistedWorldtypes;
     private BlockCoord coord = new BlockCoord();
+    private int x;
+    private int y;
+    private int z;
     private int x1;
     private int y1;
     private int z1;
     private List<BlockCoord> list = new ArrayList<BlockCoord>();
     private int genned;
+    private int min;
+    private int max;
+    private int numberOfBlocks;
     
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
@@ -47,11 +53,14 @@ public class OreGen implements IWorldGenerator
         if (blacklistedWorldtypes.contains(world.getWorldInfo().getTerrainType().getWorldTypeName()))
             return;
         
+        min = EnderOre.enderOreMinHeight.getInt();
+        max = EnderOre.enderOreMaxHeight.getInt();
+        
         for (int i=0; i<EnderOre.enderOreFrequency.getInt(); i++)
         {
-            int x = chunkX * 16 + random.nextInt(16);
-            int z = chunkZ * 16 + random.nextInt(16);
-            int y = EnderOre.enderOreMinHeight.getInt() + (int)(Math.random() * ((EnderOre.enderOreMaxHeight.getInt() - EnderOre.enderOreMinHeight.getInt()) + 1));
+            x = chunkX * 16 + random.nextInt(16);
+            z = chunkZ * 16 + random.nextInt(16);
+            y = min + (int)(Math.random() * ((max - min) + 1));
             generateOre(world, random, x, y, z);
         }
         
@@ -61,7 +70,7 @@ public class OreGen implements IWorldGenerator
     
     private boolean generateOre(World world, Random rand, int x, int y, int z)
     {
-        int numberOfBlocks = rand.nextInt(EnderOre.enderOreSize.getInt()) + 3;
+        numberOfBlocks = rand.nextInt(EnderOre.enderOreSize.getInt()) + 3;
         
         genned = 0;
 
