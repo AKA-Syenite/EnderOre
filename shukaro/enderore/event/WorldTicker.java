@@ -23,6 +23,7 @@ public class WorldTicker implements ITickHandler
     private long worldSeed;
     private long xSeed;
     private long zSeed;
+    private ChunkCoord c;
     
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -40,7 +41,7 @@ public class WorldTicker implements ITickHandler
         if ((chunks != null) && (chunks.size() > 0))
         {
             count++;
-            ChunkCoord c = (ChunkCoord) chunks.get(0);
+            c = (ChunkCoord) chunks.get(0);
             worldSeed = world.getSeed();
             Random rand = new Random(worldSeed);
             xSeed = rand.nextLong() >> 3;
