@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class ChunkCoord implements Serializable
 {
-    public final int chunkX;
-    public final int chunkZ;
+    public int chunkX;
+    public int chunkZ;
     
     public ChunkCoord(BlockCoord c)
     {
@@ -21,6 +21,16 @@ public class ChunkCoord implements Serializable
     public boolean equals(ChunkCoord chunk)
     {
         return (chunk.chunkX == this.chunkX) && (chunk.chunkZ == this.chunkZ);
+    }
+    
+    public boolean contains(BlockCoord c)
+    {
+    	return this.contains(c.x, c.z);
+    }
+    
+    public boolean contains(int x, int z)
+    {
+    	return this.chunkX == (x >> 4) && this.chunkZ == (z >> 4);
     }
     
     public int getCenterX()

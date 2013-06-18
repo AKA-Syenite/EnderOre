@@ -57,6 +57,7 @@ public class EnderOre
     public static Property enderOreMinHeight;
     public static Property enderOreSize;
     public static Property genOre;
+    public static Property spawnEnder;
     
     public static Item enderDust;
     public static Property enderDustID;
@@ -83,6 +84,7 @@ public class EnderOre
             blockEnderOreID = c.getBlock("blockEnderOre", 3050);
             enderDustID = c.getItem("enderDust", 4700);
             genOre = c.get("World Generation", "Generate Ore", true);
+            spawnEnder = c.get("World Generation", "Spawn Endermen", true);
             enderOreFrequency = c.get("World Generation", "Ore Frequency", 8);
             enderOreMaxHeight = c.get("World Generation", "Ore Max Height", 32);
             enderOreMinHeight = c.get("World Generation", "Ore Min Height", 1);
