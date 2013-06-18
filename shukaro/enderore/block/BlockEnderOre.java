@@ -93,9 +93,10 @@ public class BlockEnderOre extends Block
     	if (!world.isRemote && rand.nextInt(100) < 20 && EnderOre.spawnEnder.getBoolean(true) && !EnchantmentHelper.getSilkTouchModifier(entityplayer))
     	{
     		EntityEnderman ender = new EntityEnderman(world);
-    		ender.setLocationAndAngles((double)x + 0.5D, (double)y, (double)z + 0.5D, 0.0F, 0.0F);
+    		ender.setLocationAndAngles((double)x + 0.5D, (double)y + 0.25D, (double)z + 0.5D, 0.0F, 0.0F);
     		world.spawnEntityInWorld(ender);
     		ender.spawnExplosionParticle();
+    		ender.playSound("mob.endermen.portal", 1.0F, 1.0F);
     	}
     }
     
