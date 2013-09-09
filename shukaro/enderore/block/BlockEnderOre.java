@@ -92,12 +92,39 @@ public class BlockEnderOre extends Block
     	super.harvestBlock(world, entityplayer, x, y, z, fortune);
     	if (!world.isRemote && rand.nextInt(100) < 20 && EnderOre.spawnEnder.getBoolean(true) && !EnchantmentHelper.getSilkTouchModifier(entityplayer))
     	{
-    		EntityEnderman ender = new EntityEnderman(world);
-    		ender.setLocationAndAngles((double)x + 0.5D, (double)y + 0.25D, (double)z + 0.5D, 0.0F, 0.0F);
-    		world.spawnEntityInWorld(ender);
-    		ender.spawnExplosionParticle();
-    		ender.playSound("mob.endermen.portal", 1.0F, 1.0F);
+    		int tries = rand.nextInt(20);
+    		for (int i=0; i<tries; i++)
+    		{
+    			int spawnX = x + rand.nextInt(3) - rand.nextInt(3);
+    			int spawnY = y + rand.nextInt(3) - rand.nextInt(3);
+    			int spawnZ = z + rand.nextInt(3) - rand.nextInt(3);
+    			if (canSpawnEnder(world, spawnX, spawnY, spawnZ))
+    			{
+    				EntityEnderman ender = new EntityEnderman(world);
+    				ender.setLocationAndAngles((double)spawnX + rand.nextDouble(), (double)spawnY + rand.nextDouble(), (double)spawnZ + rand.nextDouble(), rand.nextFloat(), rand.nextFloat());
+    				world.spawnEntityInWorld(ender);
+    	    		ender.spawnExplosionParticle();
+    	    		ender.playSound("mob.endermen.portal", 1.0F, 1.0F);
+    	    		break;
+    			}
+    		}
     	}
+    }
+    
+    private boolean canSpawnEnder(World world, int x, int y, int z)
+    {
+    	// I don't want to do this on one line :|
+    	if (Block.blocksList[world.getBlockId(x, y, z)] == null || Block.blocksList[world.getBlockId(x, y, z)].isAirBlock(world, x, y, z))
+    	{
+    		if (Block.blocksList[world.getBlockId(x, y+1, z)] == null || Block.blocksList[world.getBlockId(x, y+1, z)].isAirBlock(world, x, y+1, z))
+    		{
+    			if (Block.blocksList[world.getBlockId(x, y+2, z)] == null || Block.blocksList[world.getBlockId(x, y+2, z)].isAirBlock(world, x, y+2, z))
+    			{
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
     }
     
     private void glow(World par1World, int par2, int par3, int par4)
