@@ -4,13 +4,13 @@
     
     <property name="build.dir" value="build" />
     <property name="classes.dir" value="${build.dir}/packaging" />
-    <property name="forge.buildnum" value="684" />
-    <property name="forge.version" value="1.5.2-7.8.0.${forge.buildnum}" />
+    <property name="forge.buildnum" value="859" />
+    <property name="forge.version" value="1.6.2-9.10.1.${forge.buildnum}" />
     <property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
     <property name="forge.dir" value="${build.dir}/forge" />
     <property name="mcp.dir" value="${forge.dir}/mcp" />
     <property name="mcpsrc.dir" value="${mcp.dir}/src/minecraft" />
-    <property name="build.ver" value="1.5.2" />
+    <property name="build.ver" value="1.0" />
     <property name="dist.dir" value="${build.dir}/dist" />
     <property name="download.dir" value="downloads" />
     <property name="lib.dir" value="${mcp.dir}/lib" />
@@ -149,20 +149,18 @@
         <copy todir="${mcpsrc.dir}" file="mcmod.info" overwrite="true"/>
     </target>
     
-    <target name="download-forge" depends="download-ant-contrib" unless="forge-exists">
-        <taskdef resource="net/sf/antcontrib/antlib.xml">
-            <classpath>
-                <pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
-                <fileset dir="${download.dir}/ant-contrib/lib">
-                    <include name="*.jar"/>
-                </fileset>
-            </classpath>
-        </taskdef>
-        <echo message="Downloading forge... " />
-        <getMethod url="http://files.minecraftforge.net/minecraftforge-src-${forge.version}.zip" responseDataFile="${download.dir}/minecraftforge-src-${forge.version}.zip">
-            <header name="User-Agent" value="Ant-${ant.version}/${ant.java.version}"/>
-        </getMethod>
-    </target>
+	<target name="download-forge" depends="download-ant-contrib" unless="forge-exists">
+	        <taskdef resource="net/sf/antcontrib/antlib.xml">
+	            <classpath>
+	                <pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
+	                <fileset dir="${download.dir}/ant-contrib/lib">
+	                    <include name="*.jar"/>
+	                </fileset>
+	            </classpath>
+	        </taskdef>
+	        <echo message="Downloading forge... " />
+	        <get src="${forge.url}" dest="${download.dir}/minecraftforge-src-${forge.version}.zip" />
+	    </target>
     
     <target name="download-ant-contrib" unless="should-download-ant-contrib">
         <echo message="Getting: ant-contrib"/>
