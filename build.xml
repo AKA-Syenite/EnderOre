@@ -88,13 +88,13 @@
 
         <copy todir="${classes.dir}" file="mcmod.info"/>
 
-        <copy todir="${classes.dir}/mods/enderore/textures/blocks/">
-            <fileset dir="mods/enderore/textures/blocks/" />
-        </copy>
-        
-        <copy todir="${classes.dir}/mods/enderore/textures/items/">
-            <fileset dir="mods/enderore/textures/items/" />
-        </copy>
+    	<copy todir="${classes.dir}/assets/artifice/textures/blocks/">
+            <fileset dir="assets/artifice/textures/blocks/" />
+    	</copy>
+    	        
+    	<copy todir="${classes.dir}/assets/artifice/textures/items/">
+    	    <fileset dir="assets/artifice/textures/items/" />
+    	</copy>
         
         <copy todir="${classes.dir}/shukaro/enderore/lang/">
            <fileset dir="shukaro/enderore/lang/" />
