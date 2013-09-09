@@ -2,8 +2,30 @@ cpw/
 ibxm/
 net/
 paulscode/
+assets/forge/
 *.cfg
 *.properties
-*.png
+forge_logo.png
+mcp.png
 Start.java
 mcpmod.info
+*.lzma
+
+# Eclipse
+*.pydevproject
+.project
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# Stuff created by the buildfile
+build/
+downloads/
