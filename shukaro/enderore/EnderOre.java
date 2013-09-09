@@ -21,9 +21,9 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
 import shukaro.enderore.block.BlockEnderOre;
 import shukaro.enderore.block.EnderDust;
+import shukaro.enderore.block.ItemBlockEnderOre;
 import shukaro.enderore.event.EventHandler;
 import shukaro.enderore.event.WorldTicker;
 import shukaro.enderore.world.OreGen;
@@ -126,7 +126,7 @@ public class EnderOre
         blockEnderOre = new BlockEnderOre(blockEnderOreID.getInt());
         enderDust = new EnderDust(enderDustID.getInt());
         
-        GameRegistry.registerBlock(blockEnderOre, blockEnderOre.getUnlocalizedName());
+        GameRegistry.registerBlock(blockEnderOre, ItemBlockEnderOre.class, blockEnderOre.getUnlocalizedName());
         GameRegistry.registerItem(enderDust, enderDust.getUnlocalizedName());
         
         GameRegistry.registerWorldGenerator(worldGen = new OreGen());
