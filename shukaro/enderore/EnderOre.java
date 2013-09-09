@@ -105,8 +105,6 @@ public class EnderOre
         }
         
         setConfigFolderBase(e.getModConfigurationDirectory());
-        extractLang(new String[] {"en_US" });
-        loadLang();
         
         logger = e.getModLog();
         
@@ -159,64 +157,5 @@ public class EnderOre
     public static void setConfigFolderBase(File folder)
     {
         configFolder = new File(folder.getAbsolutePath() + "/shukaro/enderore/");
-    }
-    
-    public static void extractLang(String[] languages)
-    {
-        String langResourceBase = "/shukaro/enderore/lang/";
-        for (String lang : languages)
-        {
-            InputStream is = EnderOre.instance.getClass().getResourceAsStream(langResourceBase + lang + ".lang");
-            try
-            {
-                File f = new File(configFolder.getAbsolutePath() + "/lang/" + lang + ".lang");
-                if (!f.exists())
-                    f.getParentFile().mkdirs();
-                OutputStream os = new FileOutputStream(f);
-                byte[] buffer = new byte[1024];
-                int read = 0;
-                while ((read = is.read(buffer)) != -1)
-                {
-                    os.write(buffer, 0, read);
-                }
-                is.close();
-                os.flush();
-                os.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    public static void loadLang()
-    {
-        File f = new File(configFolder.getAbsolutePath() + "/lang/");
-        for (File langFile : f.listFiles(new FilenameFilter()
-        {
-            @Override
-            public boolean accept(File dir, String name)
-            {
-                return name.endsWith(".lang");
-            }
-        }))
-        {
-            try
-            {
-                Properties langPack = new Properties();
-                langPack.load(new FileInputStream(langFile));
-                String lang = langFile.getName().replace(".lang", "");
-                LanguageRegistry.instance().addStringLocalization(langPack, lang);
-            }
-            catch (FileNotFoundException x)
-            {
-                x.printStackTrace();
-            }
-            catch (IOException x)
-            {
-                x.printStackTrace();
-            }
-        }
     }
 }
