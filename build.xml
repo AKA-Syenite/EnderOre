@@ -87,6 +87,8 @@
         </copy>
 
         <copy todir="${classes.dir}" file="mcmod.info"/>
+        
+        <copy todir="${classes.dir}" file="pack.mcmeta"/>
 
         <copy todir="${classes.dir}/mods/enderore/textures/blocks/">
             <fileset dir="mods/enderore/textures/blocks/" />
