@@ -1,18 +1,20 @@
-<project name="Artifice" default="install" basedir=".">
+<project name="EnderOre" default="install" basedir=".">
 
     <property environment="env" />
     
-    <property name="build.dir" value="build" />
+    <property name="branch.dir" value="../master" />
+    <property name="build.dir" value="${branch.dir}/build" />
+    <property name="artifacts.dir" value="../artifacts" />
     <property name="classes.dir" value="${build.dir}/packaging" />
-    <property name="forge.buildnum" value="859" />
-    <property name="forge.version" value="1.6.2-9.10.1.${forge.buildnum}" />
+    <property name="forge.buildnum" value="933" />
+    <property name="forge.version" value="1.6.4-9.11.1.${forge.buildnum}" />
     <property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
     <property name="forge.dir" value="${build.dir}/forge" />
     <property name="mcp.dir" value="${forge.dir}/mcp" />
     <property name="mcpsrc.dir" value="${mcp.dir}/src/minecraft" />
     <property name="build.ver" value="1.0" />
     <property name="dist.dir" value="${build.dir}/dist" />
-    <property name="download.dir" value="downloads" />
+    <property name="download.dir" value="../downloads" />
     <property name="lib.dir" value="${mcp.dir}/lib" />
     
     <property file="${forge.dir}/forgeversion.properties" />
@@ -21,7 +23,17 @@
     </condition>
 
     <property name="verclass.dir" value="${mcpsrc.dir}/shukaro/enderore" />
-        <property name="verclass.name" value="EnderOre.java"/>
+    <property name="verclass.name" value="EnderOre.java"/>
+    
+       <mkdir dir="${branch.dir}"/>
+
+        <target name="move-branch">
+                <copy todir="${branch.dir}">
+                    <fileset dir="."/>
+                </copy>
+            </target>
+    
+    <delete dir="${artifacts.dir}" failonerror="false"/>
     
     <mkdir dir="${download.dir}"/>
     <mkdir dir="${build.dir}" />
@@ -30,16 +42,16 @@
         <!-- Copy source -->
         <mkdir dir="${mcpsrc.dir}/shukaro" />
         <copy todir="${mcpsrc.dir}/shukaro" overwrite="true">
-            <fileset dir="shukaro"/>
+            <fileset dir="${branch.dir}/shukaro"/>
         </copy>
-        <copy todir="${mcpsrc.dir}" file="mcmod.info" overwrite="true"/>
+        <copy todir="${mcpsrc.dir}" file="${branch.dir}/mcmod.info" overwrite="true"/>
 
         <exec dir="${verclass.dir}" executable="sh" osfamily="unix" outputproperty="grep.out">
             <arg value="-c"/>
             <arg value="grep -o -P '[0-9.]+R[0-9.]+(RC[0-9]+)?(B[0-9]+)?' ${verclass.name}"/>
         </exec>
         <exec executable="python" osfamily="unix" outputproperty="python.out">
-            <arg value="versionscript.py" />
+            <arg value="${branch.dir}/versionscript.py" />
             <arg value="${grep.out}" />
         </exec>
         <echo message="Grepped version: ${grep.out}"/>
@@ -57,6 +69,8 @@
     
     <target name="install" depends="build">
         <jar destfile="${dist.dir}/EnderOre-${python.out}-${build.number}.jar" basedir="${classes.dir}"/>
+        <mkdir dir="${artifacts.dir}"/>
+        <copy todir="../artifacts" file="${dist.dir}/EnderOre-${python.out}-${build.number}.jar"/>
         <delete dir="${classes.dir}" />
         <delete dir="${mcp.dir}/reobf"/>
         <delete dir="${mcpsrc.dir}/shukaro/enderore" />
@@ -86,20 +100,20 @@
             <fileset dir="${mcp.dir}/reobf/minecraft"/>
         </copy>
 
-        <copy todir="${classes.dir}" file="mcmod.info"/>
+        <copy todir="${classes.dir}" file="${branch.dir}/mcmod.info"/>
         
-        <copy todir="${classes.dir}" file="pack.mcmeta"/>
+        <copy todir="${classes.dir}" file="${branch.dir}/pack.mcmeta"/>
 
-    	<copy todir="${classes.dir}/assets/enderore/textures/blocks/">
-            <fileset dir="assets/enderore/textures/blocks/" />
-    	</copy>
-    	        
-    	<copy todir="${classes.dir}/assets/enderore/textures/items/">
-    	    <fileset dir="assets/enderore/textures/items/" />
-    	</copy>
+        <copy todir="${classes.dir}/assets/enderore/textures/blocks/">
+            <fileset dir="${branch.dir}/assets/enderore/textures/blocks/" />
+        </copy>
+        
+        <copy todir="${classes.dir}/assets/enderore/textures/items/">
+            <fileset dir="${branch.dir}/assets/enderore/textures/items/" />
+        </copy>
         
         <copy todir="${classes.dir}/assets/enderore/lang/">
-           <fileset dir="assets/enderore/lang/" />
+           <fileset dir="${branch.dir}/assets/enderore/lang/" />
         </copy>
     </target>
     
@@ -113,7 +127,7 @@
         <property name="build.number" value="CUSTOM_BUILD" />
     </target>
     
-    <target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there" unless="forge.already.installed">
+    <target name="setup-forge" depends="move-branch,download-forge,build-number-there,build-number-not-there" unless="forge.already.installed">
 
         <property name="build.full" value="${build.number}" />
         <unzip dest="${build.dir}">
@@ -146,23 +160,23 @@
         <!-- Copy source -->
         <mkdir dir="${mcpsrc.dir}/shukaro" />
         <copy todir="${mcpsrc.dir}/shukaro" overwrite="true">
-            <fileset dir="shukaro"/>
+            <fileset dir="${branch.dir}/shukaro"/>
         </copy>
-        <copy todir="${mcpsrc.dir}" file="mcmod.info" overwrite="true"/>
+        <copy todir="${mcpsrc.dir}" file="${branch.dir}/mcmod.info" overwrite="true"/>
     </target>
     
-	<target name="download-forge" depends="download-ant-contrib" unless="forge-exists">
-	        <taskdef resource="net/sf/antcontrib/antlib.xml">
-	            <classpath>
-	                <pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
-	                <fileset dir="${download.dir}/ant-contrib/lib">
-	                    <include name="*.jar"/>
-	                </fileset>
-	            </classpath>
-	        </taskdef>
-	        <echo message="Downloading forge... " />
-	        <get src="${forge.url}" dest="${download.dir}/minecraftforge-src-${forge.version}.zip" />
-	    </target>
+    <target name="download-forge" depends="download-ant-contrib" unless="forge-exists">
+        <taskdef resource="net/sf/antcontrib/antlib.xml">
+            <classpath>
+                <pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
+                <fileset dir="${download.dir}/ant-contrib/lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </taskdef>
+        <echo message="Downloading forge... " />
+        <get src="${forge.url}" dest="${download.dir}/minecraftforge-src-${forge.version}.zip" />
+    </target>
     
     <target name="download-ant-contrib" unless="should-download-ant-contrib">
         <echo message="Getting: ant-contrib"/>
@@ -186,6 +200,7 @@
 
     <target name="clean" >
         <delete dir="${build.dir}" />
+        <delete dir="." />
     </target>
     
 </project>
